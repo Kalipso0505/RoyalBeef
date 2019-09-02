@@ -1,8 +1,5 @@
-.rb-alex {
-    background-image: url("../avatars/alex.jpg");
-    max-width: 100%;
-    height: auto;
-    background-size:contain;
+.rb-avatar {
+ /*   max-height: 200px;*/
 }
 
 .rb-polaroid {

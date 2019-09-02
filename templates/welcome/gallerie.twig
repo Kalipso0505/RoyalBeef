@@ -1,0 +1,14 @@
+        <div id="carouselExampleSlidesOnly" class="carousel slide carousel-fade" data-ride="carousel">
+            <ol class="carousel-indicators">
+                {%  for key in avatars|keys %}
+                    <li data-target="#carouselExampleIndicators" data-slide-to="{{ key }}"></li>
+                {% endfor %}
+            </ol>
+            <div class="carousel-inner">
+                {% for avatar in avatars %}
+                    <div class="carousel-item{% if avatars|first == avatar %} active{% endif %}">
+                        <img src="{{ asset('avatars/' ~ avatar ~ '.jpg') }}" class="rb-avatar d-block rounded img-thumbnail" alt="{{ avatar }}">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
