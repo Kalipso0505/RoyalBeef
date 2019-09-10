@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}{% endblock %}
+{% block title %}Hello BeefController!{% endblock %}
+
+{% block body %}
+        <h1 class="text-primary">Beefs</h1>
+
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">2019</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Braunlage</h6>
+                <p class="card-text">Kalipso, Joni, Chris, Rens, Kos, Bärti</p>
+                <a href="{{ path('game_list', {'year': 2019}) }}" class="card-link">Load</a>
+            </div>
+        </div>
+{% endblock %}
+
+
