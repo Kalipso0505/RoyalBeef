@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\GameLoaderService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,11 +17,11 @@ class GameListController extends AbstractController
      */
     public function index(int $year): Response
     {
+        $gameListpath = $this->getParameter('kernel.root_dir') . '/../games/';
+        //dd($gameListpath);
         return $this->render('game_list/index.html.twig', [
             'year' => $year,
-            'gameList' => [
-                'Mario Card'
-            ],
+            'gameList' => GameLoaderService::load($gameListpath, $year),
         ]);
     }
 }
