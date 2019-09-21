@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Service\GameLoaderService;
+use App\Service\BeefDataRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,11 +17,11 @@ class GameListController extends AbstractController
      */
     public function index(int $year): Response
     {
-        $gameListpath = $this->getParameter('kernel.root_dir') . '/../games/';
-        //dd($gameListpath);
+        $beefDatapath = $this->getParameter('kernel.root_dir') . '/../games/';
+        //dd(BeefDataRepository::load($beefDatapath, $year));
         return $this->render('game_list/index.html.twig', [
             'year' => $year,
-            'gameList' => GameLoaderService::load($gameListpath, $year),
+            'gameList' => BeefDataRepository::games($beefDatapath, $year),
         ]);
     }
 }

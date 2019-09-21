@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Kernel;
-
 /**
- * Class CsvLoaderService
+ * Class BeefDataRepository
  * @package App\Service
  */
-class CsvLoaderService
+class BeefDataRepository
 {
-    public static function games(string $rootDir, int $year)
+    /**
+     * @param string $rootDir
+     * @param int    $year
+     *
+     * @return array
+     */
+    public static function games(string $rootDir, int $year): array
     {
-           self::keyValue($rootDir,$year);
+        return self::keyValue($rootDir, $year, 'list');
     }
 
     /**
@@ -23,12 +27,25 @@ class CsvLoaderService
      *
      * @return array
      */
-    private static function keyValue(string $rootDir, int $year): array
+    public static function player(string $rootDir, int $year): array
+    {
+        return self::singleCol($rootDir, $year, 'player');
+    }
+
+    /**
+     * @param string $rootDir
+     * @param int    $year
+     *
+     * @param string $file
+     *
+     * @return array
+     */
+    private static function keyValue(string $rootDir, int $year, string $file): array
     {
         $result = [];
         ini_set('auto_detect_line_endings', '1');
-        $handle =    fopen($rootDir . $year . '/list.csv', 'rb');
-        while ( ($data = fgetcsv($handle) ) !== FALSE ) {
+        $handle = fopen($rootDir . $year . '/' . $file . '.csv', 'rb');
+        while (($data = fgetcsv($handle)) !== false) {
             $result[$data[0]] = $data[1];
         }
         ini_set('auto_detect_line_endings', '0');
@@ -40,15 +57,17 @@ class CsvLoaderService
      * @param string $rootDir
      * @param int    $year
      *
+     * @param string $file
+     *
      * @return array
      */
-    public static function singleCol(string $rootDir, int $year): array
+    private static function singleCol(string $rootDir, int $year, string $file): array
     {
         $result = [];
         ini_set('auto_detect_line_endings', '1');
-        $handle =    fopen($rootDir . $year . '/list.csv', 'rb');
-        if ( ($data = fgetcsv($handle) ) !== FALSE ) {
-            $result = $data;
+        $handle = fopen($rootDir . $year . '/' . $file . '.csv', 'rb');
+        while (($data = fgetcsv($handle)) !== false) {
+            $result[] = $data[0];
         }
         ini_set('auto_detect_line_endings', '0');
 
