@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello GamePlanController!{% endblock %}
+
+{% block body %}
+<div class="example-wrapper">
+    <h1 class="text-primary">{{ game }}! ✅</h1>
+
+    This friendly message is coming from:
+    <ul>
+        <li>Your controller at <code><a href="{{ '/home/alex/vagrant/projects/Projekte/RoyalBeef/src/Controller/GamePlanController.php'|file_link(0) }}">src/Controller/GamePlanController.php</a></code></li>
+        <li>Your template at <code><a href="{{ '/home/alex/vagrant/projects/Projekte/RoyalBeef/templates/game_plan/index.html.twig'|file_link(0) }}">templates/game_plan/index.html.twig</a></code></li>
+    </ul>
+</div>
+{% endblock %}
