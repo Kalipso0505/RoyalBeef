@@ -23,9 +23,17 @@ class GamePlanController extends AbstractController
         $game = urldecode($game);
         $beefDataPath = $this->getParameter('kernel.root_dir') . '/../games/';
         $playerList = BeefDataRepository::player($beefDataPath, $year);
+
+        switch ($type) {
+            case '4p': $matchMakingTable = MatchMaker::fourCompete($playerList);break;
+            case '1p': $matchMakingTable = MatchMaker::oneOnOne($playerList); break;
+
+            default: $matchMakingTable = MatchMaker::oneOnOne($playerList);
+        }
+
         return $this->render('game_plan/index.html.twig', [
             'game' => $game,
-            'gamePlan' => MatchMaker::OneOnOne($playerList)
+            'gamePlan' => $matchMakingTable
         ]);
     }
 }
