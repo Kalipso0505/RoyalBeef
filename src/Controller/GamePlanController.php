@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\BeefDataRepository;
+use App\Service\MatchMaker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,11 +22,10 @@ class GamePlanController extends AbstractController
     {
         $game = urldecode($game);
         $beefDataPath = $this->getParameter('kernel.root_dir') . '/../games/';
-        $gamer = BeefDataRepository::player($beefDataPath, $year);
-        dd($game, $type, $gamer);
+        $playerList = BeefDataRepository::player($beefDataPath, $year);
         return $this->render('game_plan/index.html.twig', [
             'game' => $game,
-            'year' => $year
+            'gamePlan' => MatchMaker::OneOnOne($playerList)
         ]);
     }
 }
