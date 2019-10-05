@@ -24,7 +24,9 @@ class GamePlanController extends AbstractController
         $game = urldecode($game);
         $beefDataPath = $this->getParameter('kernel.root_dir') . '/../games/';
         $playerList = BeefDataRepository::player($beefDataPath, $year);
-        $playerList  = array_map('ucfirst', $playerList);
+        $playerList  = array_map(function($item) {
+            return ucfirst(str_replace('ae', 'ä', $item));
+        }, $playerList);
 
         $matchMakingTable = MatchMaker::createGamePlan($playerList, rtrim($type, 'p'));
 
