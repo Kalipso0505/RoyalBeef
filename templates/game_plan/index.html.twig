@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello GamePlanController!{% endblock %}
+{% block title %}Spiele{% endblock %}
 
 {% block javascripts %}<script src="extensions/editable/bootstrap-table-editable.js"></script>{% endblock %}
 
@@ -8,8 +8,14 @@
     <h1 class="text-primary">{{ game }}</h1>
 
     <table class="table table-sm table-dark table-bordered">
+        <thead>
+        <tr>
+{% for cell in gamePlan|first %}            <th scope="col">{{ cell }}</th>
+{% endfor %}
+        </tr>
+        </thead>
         <tbody>
-        {% for row in gamePlan %}
+        {% for row in gamePlan|slice(1) %}
             <tr>
             {% for cell in row %}
                 <td>{{ cell }}</a></td>

@@ -17,19 +17,16 @@ class GamePlanController extends AbstractController
      * @param string $type
      *
      * @return Response
+     * @throws \Exception
      */
     public function index(int $year, string $game, string $type): Response
     {
         $game = urldecode($game);
         $beefDataPath = $this->getParameter('kernel.root_dir') . '/../games/';
         $playerList = BeefDataRepository::player($beefDataPath, $year);
+        $playerList  = array_map('ucfirst', $playerList);
 
-        switch ($type) {
-            case '4p': $matchMakingTable = MatchMaker::fourCompete($playerList);break;
-            case '1p': $matchMakingTable = MatchMaker::oneOnOne($playerList); break;
-
-            default: $matchMakingTable = MatchMaker::oneOnOne($playerList);
-        }
+        $matchMakingTable = MatchMaker::createGamePlan($playerList, rtrim($type, 'p'));
 
         return $this->render('game_plan/index.html.twig', [
             'game' => $game,
