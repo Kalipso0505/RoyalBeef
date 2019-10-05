@@ -10,6 +10,8 @@ namespace App\Service;
  */
 class MatchMaker
 {
+    private const ROUND = 'Round';
+
     /**
      * @param array $playerList
      *
@@ -20,7 +22,6 @@ class MatchMaker
         $result      = [];
         $headline[]  = '#';
         $playerCount = count($playerList);
-        $playerList  = array_map('ucfirst', $playerList);
 
         foreach ($playerList as $key => $player) {
             $headline[] = $player;
@@ -34,41 +35,63 @@ class MatchMaker
         return $result;
     }
 
-    public static function fourCompete(array $playerList): array
-    {
-        $playerPerField = 4;
-        $match          = self::createGameField($playerList, $playerPerField);
-
-        $combinations = $playerPerField * count($playerList);
-    }
-
     public static function createGamePlan(array $playerList, int $gamerPerField): array
     {
-        $result  = [];
-        $roundNr = 1;
+        if(count($playerList) < $gamerPerField) {
+            throw new \Exception('Too few player for this game.');
+        }
 
-        while($firstPlayer = array_shift($playerList)) {
-            foreach ($playerList as $player) {
-                $result[] = ['Round ' . $roundNr++, $firstPlayer, $player];
+        $result = self::createGameRows($playerList, $gamerPerField);
+        $headline = [];
+        $headline[] = '#';
+        for($i = 1; $i <= $gamerPerField; $i++) {
+            $headline[] = 'Player ' . $i;
+        }
+
+        array_unshift($result, $headline);
+
+        return $result;
+    }
+
+    private static function createGameRows(array $playerList, int $gamerPerField, int $roundNr = 1): array
+    {
+        $starters = array_slice($playerList, 0, $gamerPerField);
+        $rest = array_slice($playerList, $gamerPerField, count($playerList));
+
+        $result = [];
+        $result[] = self::createRow($starters, $roundNr);
+
+        foreach ($rest as $player) {
+            for($i = 1; $i < $gamerPerField; $i++) {
+                $newRow = $starters;
+                $newRow[$i] = $player;
+                $result[] = self::createRow($newRow, $roundNr);
             }
         }
 
-        return $result;
-    }
-
-    private static function createGameField(array $playerList, int $gamerPerField): array
-    {
-        $result = [];
-        for ($i = 0; $i < $gamerPerField; ++$i) {
-            $result[] = array_shift($playerList);
+        array_shift($playerList);
+        if(count($playerList) >= $gamerPerField) {
+            $result = array_merge($result, self::createGameRows($playerList, $gamerPerField, $roundNr));
         }
 
         return $result;
     }
-}
 
-# # a  b  c
-# a '' '' ''
-# c '' '' ''
+    /**
+     * @param array $players
+     * @param       $roundNr
+     *
+     * @return array
+     */
+    private static function createRow(array $players, &$roundNr): array
+    {
+        $row[] = self::ROUND . ' ' . $roundNr++;
+        foreach($players as $player) {
+            $row[] = $player;
+        }
+
+        return $row;
+    }
+}
 
 
