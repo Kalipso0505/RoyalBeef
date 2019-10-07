@@ -10,7 +10,6 @@ namespace App\Service;
  */
 class MatchMaker
 {
-    private const ROUND = 'Round';
 
     /**
      * @param array $playerList
@@ -43,7 +42,6 @@ class MatchMaker
 
         $result = self::createGameRows($playerList, $gamerPerField);
         $headline = [];
-        $headline[] = '#';
         for($i = 1; $i <= $gamerPerField; $i++) {
             $headline[] = 'Player ' . $i;
         }
@@ -85,7 +83,6 @@ class MatchMaker
      */
     private static function createRow(array $players, &$roundNr): array
     {
-        $row[] = self::ROUND . ' ' . $roundNr++;
         foreach($players as $player) {
             $row[] = $player;
         }
