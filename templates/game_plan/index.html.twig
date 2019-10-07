@@ -1,26 +1,40 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Spiele{% endblock %}
+{% block title %}Spielrundenergebnisse{% endblock %}
 
 {% block javascripts %}<script src="extensions/editable/bootstrap-table-editable.js"></script>{% endblock %}
 
 {% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item" aria-current="page"><a href="{{ path('beef') }}">Beefs</a></li>
+            <li class="breadcrumb-item" aria-current="page"><a href="{{ path('game_list', {'year': '2019'}) }}">Spiele</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Runden</li>
+        </ol>
+    </nav>
     <h1 class="text-primary">{{ game }}</h1>
 
-    <table class="table table-sm table-dark table-bordered">
-        <thead>
-        <tr>
-{% for cell in gamePlan|first %}            <th scope="col">{{ cell }}</th>
-{% endfor %}
-        </tr>
-        </thead>
-        <tbody>
-        {% for row in gamePlan|slice(1) %}
+    <form>
+        <table class="table table-sm table-dark table-bordered table-striped">
+            <caption>Spielrundenergebnisse</caption>
+            <thead class="thead-light">
             <tr>
-            {% for cell in row %}
-                <td>{{ cell }}</a></td>
-            {% endfor %}
-            </tr>{% endfor %}
-        </tbody>
-    </table>
+                <th scope="col" colspan="2">#</th>
+{% for cell in gamePlan|first %}            <th scope="col" colspan="2">{{ cell }}</th>
+{% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in gamePlan|slice(1) %}
+                <tr>
+                <td>Round</td><td>{{ loop.index }}</td>
+                {% for cell in row %}
+                    <td>{{ cell }}</a></td>
+                    <td> <input name="result[{{ loop.parent.loop.index }}{{ loop.index }}]" type="text" style="width: 40px;"></td>
+                {% endfor %}
+                </tr>{% endfor %}
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
 {% endblock %}
