@@ -30,11 +30,28 @@
                 <td>Round</td><td>{{ loop.index }}</td>
                 {% for cell in row %}
                     <td>{{ cell }}</a></td>
-                    <td> <input name="result[{{ loop.parent.loop.index }}{{ loop.index }}]" type="text" style="width: 40px;"></td>
+                    <td> <input name="result[{{ loop.parent.loop.index }}][{{ loop.index }}][{{ cell }}]" value="{{ score[loop.parent.loop.index][loop.index][cell] }}" type="number" min="0" max="{{ maxPoints }}" style="width: 40px;"></td>
                 {% endfor %}
                 </tr>{% endfor %}
             </tbody>
         </table>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+
+    <table class="table table-sm table-dark table-bordered table-striped">
+        <caption>SpielrundenergebnisseSummiert</caption>
+        <thead class="thead-light">
+        <tr>
+            <th>Player</th>
+            <th>Score</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for player,score in sumScore %}
+            <tr>
+                <td>{{ player }}</td><td>{{ score }}</td>
+            </tr>{% endfor %}
+        </tbody>
+    </table>
+
 {% endblock %}
