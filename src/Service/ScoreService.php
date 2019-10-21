@@ -37,7 +37,12 @@ class ScoreService
     {
         $gameResultPath = "$path$year/$game.csv";
 
-        return json_decode(file_get_contents($gameResultPath), true);
+        $data = file_get_contents($gameResultPath);
+        if ($data === false) {
+            return [];
+        }
+
+        return json_decode($data, true);
     }
 
     public static function extractUserScore($data): array
