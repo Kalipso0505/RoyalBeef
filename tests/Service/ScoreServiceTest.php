@@ -11,29 +11,36 @@ class ScoreServiceTest extends TestCase
 {
     public function testStore()
     {
-        $input = [
-            ['11' => '1a', '12' => '1b', '13' => '1c', '14' => '1d'],
-            ['21' => '2a', '22' => '2b', '23' => '2c', '24' => '2d'],
-            ['31' => '3a', '32' => '3b', '33' => '3c', '34' => '3d'],
-            ['41' => '4a', '42' => '4b', '43' => '4c', '44' => '4d'],
-            ['51' => '5a', '52' => '5b', '53' => '5c', '54' => '5d'],
-            ['61' => '6a', '62' => '6b', '63' => '6c', '64' => '6d'],
-            ['71' => '7a', '72' => '7b', '73' => '7c', '74' => '7d'],
-            ['81' => '8a', '82' => '8b', '83' => '8c', '84' => '8d'],
-            ['91' => '9a', '92' => '9b', '93' => '9c', '94' => '9d'],
-            ['101' => '10a', '102' => '10b', '103' => '10c', '104' => '10d'],
-            ['111' => '11a', '112' => '11b', '113' => '11c', '114' => '11d'],
-            ['121' => '12a', '122' => '12b', '123' => '12c', '124' => '12d'],
-        ];
+        $input = $this->getTableData();
 
-        $a = ScoreService::store(__DIR__ . '/../data/games/', 123, 'spielname', $input);
+        ScoreService::store(__DIR__ . '/../data/games/', 123, 'spielname', $input);
 
         $this->assertFileExists(__DIR__ . '/../data/games/' . 123);
+
+        self::assertEquals($input, ScoreService::load(__DIR__ . '/../data/games/', 123, 'spielname'));
     }
 
     public function testScoreExtract()
     {
-        $scores = ['result' => [
+        $scores = $this->getTableData();
+        $expected = [
+            'Bäerti' => 10,
+            'Kos' => 9,
+            'Rens' => 14,
+            'Joni' => 13,
+            'Chris' => 17,
+            'Kalipso' => 9
+        ];
+        $extractUserScore = ScoreService::extractUserScore($scores);
+        self::assertSame(ksort($expected), ksort($extractUserScore));
+    }
+
+    /**
+     * @return array
+     */
+    private function getTableData(): array
+    {
+        return ['result' => [
             '1'  =>
                 ['1' => ['Kalipso' => '0'],
                  '2' => ['Joni' => '1'],
@@ -108,15 +115,5 @@ class ScoreServiceTest extends TestCase
             ],
         ],
         ];
-        $expected = [
-            'Bäerti' => 10,
-            'Kos' => 9,
-            'Rens' => 14,
-            'Joni' => 13,
-            'Chris' => 17,
-            'Kalipso' => 9
-        ];
-        $extractUserScore = ScoreService::extractUserScore($scores);
-        self::assertSame(ksort($expected), ksort($extractUserScore));
     }
 }

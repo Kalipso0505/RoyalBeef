@@ -22,10 +22,15 @@ class GamePlanController extends AbstractController
      */
     public function index(int $year, string $game, string $type): Response
     {
+        $beefDatapath = $this->getParameter('kernel.root_dir') . '/../games/';
+
         if (!empty($_REQUEST)) {
-            // todo aktualisieren der csv daten
+            $result = $_REQUEST['result'];
+            ScoreService::store($beefDatapath, $year, $game, $_REQUEST['result']);
+        } else {
+            $result = ScoreService::load($beefDatapath, $year, $game);
         }
-        print_r($_REQUEST);
+
         $game         = urldecode($game);
         $beefDataPath = $this->getParameter('kernel.root_dir') . '/../games/';
         $playerList   = BeefDataRepository::player($beefDataPath, $year);
@@ -36,14 +41,13 @@ class GamePlanController extends AbstractController
         $gamerPerField    = rtrim($type, 'p');
         $matchMakingTable = MatchMaker::createGamePlan($playerList, $gamerPerField);
 
-        $result = $_REQUEST['result'];
 
         return $this->render('game_plan/index.html.twig', [
             'game'      => $game,
             'gamePlan'  => $matchMakingTable,
             'score'     => $result,
             'maxPoints' => $gamerPerField - 1,
-            'sumScore' => ScoreService::extractUserScore($result)
+            'sumScore'  => ScoreService::extractUserScore($result)
         ]);
     }
 }
