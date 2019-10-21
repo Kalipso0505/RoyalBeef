@@ -23,3 +23,7 @@
 
 ### yarn
 node_modules
+
+/games
+
+/tests/data/games/123/spielname.csv
