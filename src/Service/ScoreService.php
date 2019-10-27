@@ -9,33 +9,38 @@ namespace App\Service;
  */
 class ScoreService
 {
+    /**
+     * @param string $path
+     * @param int    $year
+     * @param string $game
+     * @param array  $data
+     *
+     * @return bool
+     */
     public static function store(string $path, int $year, string $game, array $data): bool
     {
-        $gameResultPath = "$path$year/$game.csv";
+        $game = self::game2FileName($game);
+        $gameResultPath = "$path$year/$game.json";
 
         $success = file_put_contents($gameResultPath, json_encode($data));
 
         return $success !== false;
     }
 
-    /*
-    public static function store(string $path, int $year, string $game, array $data): bool
-    {
-        $gameResultPath = "$path$year/$game.csv";
-        $fp  = fopen($gameResultPath, 'wb+');
-
-        foreach ($data as $fields) {
-            fputcsv($fp, $fields);
-        }
-
-        fclose($fp);
-
-        return true;
-    }*/
-
+    /**
+     * @param string $path
+     * @param int    $year
+     * @param string $game
+     *
+     * @return array
+     */
     public static function load(string $path, int $year, string $game): array
     {
-        $gameResultPath = "$path$year/$game.csv";
+        $game = self::game2FileName($game);
+        $gameResultPath = "$path$year/$game.json";
+        if (!file_exists($gameResultPath)) {
+            return [];
+        }
 
         $data = file_get_contents($gameResultPath);
         if ($data === false) {
@@ -45,6 +50,11 @@ class ScoreService
         return json_decode($data, true);
     }
 
+    /**
+     * @param $data
+     *
+     * @return array
+     */
     public static function extractUserScore($data): array
     {
         $result = [];
@@ -58,5 +68,15 @@ class ScoreService
         });
 
         return $result;
+    }
+
+    /**
+     * @param string $game
+     *
+     * @return string
+     */
+    private static function game2FileName(string $game): string
+    {
+        return 'game' . ucfirst(str_replace(' ', '_', urldecode($game)));
     }
 }

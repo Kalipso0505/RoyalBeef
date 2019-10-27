@@ -9,15 +9,20 @@ use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 
 class ScoreServiceTest extends TestCase
 {
+    public function testLoadNotExisting()
+    {
+        self::assertEquals([], ScoreService::load(__DIR__ . '/../data/games/', 123, 'existiertNicht'));
+    }
+
     public function testStore()
     {
         $input = $this->getTableData();
 
-        ScoreService::store(__DIR__ . '/../data/games/', 123, 'spielname', $input);
+        ScoreService::store(__DIR__ . '/../data/games/', 123, 'spiel name', $input);
 
-        $this->assertFileExists(__DIR__ . '/../data/games/' . 123);
+        $this->assertFileExists(__DIR__ . '/../data/games/' . 123 . '/gameSpiel_name.json');
 
-        self::assertEquals($input, ScoreService::load(__DIR__ . '/../data/games/', 123, 'spielname'));
+        self::assertEquals($input, ScoreService::load(__DIR__ . '/../data/games/', 123, 'spiel name'));
     }
 
     public function testScoreExtract()
