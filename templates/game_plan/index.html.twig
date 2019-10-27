@@ -38,20 +38,5 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
-    <table class="table table-sm table-dark table-bordered table-striped">
-        <caption>SpielrundenergebnisseSummiert</caption>
-        <thead class="thead-light">
-        <tr>
-            <th>Player</th>
-            <th>Score</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for player,score in sumScore %}
-            <tr>
-                <td>{{ player }}</td><td>{{ score }}</td>
-            </tr>{% endfor %}
-        </tbody>
-    </table>
-
+{{ include('score.html.twig') }}
 {% endblock %}

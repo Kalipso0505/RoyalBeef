@@ -11,16 +11,15 @@ class ScoreService
 {
     /**
      * @param string $path
-     * @param int    $year
      * @param string $game
      * @param array  $data
      *
      * @return bool
      */
-    public static function store(string $path, int $year, string $game, array $data): bool
+    public static function store(string $path, string $game, array $data): bool
     {
         $game = self::game2FileName($game);
-        $gameResultPath = "$path$year/$game.json";
+        $gameResultPath = "$path/$game.json";
 
         $success = file_put_contents($gameResultPath, json_encode($data));
 
@@ -29,15 +28,14 @@ class ScoreService
 
     /**
      * @param string $path
-     * @param int    $year
      * @param string $game
      *
      * @return array
      */
-    public static function load(string $path, int $year, string $game): array
+    public static function load(string $path, string $game): array
     {
         $game = self::game2FileName($game);
-        $gameResultPath = "$path$year/$game.json";
+        $gameResultPath = "$path/$game.json";
         if (!file_exists($gameResultPath)) {
             return [];
         }
@@ -51,22 +49,33 @@ class ScoreService
     }
 
     /**
-     * @param $data
+     * @param array $data
+     *
+     * @param array $result
      *
      * @return array
      */
-    public static function extractUserScore($data): array
+    public static function extractUserScore(array $data, $result = []): array
     {
-        $result = [];
         array_walk_recursive($data, static function ($item, $key) use (&$result) {
             if (!is_array($item)) {
+                $item = ($item === '') ? 0 : ((int) $item - 1);
                 if (!array_key_exists($key, $result)) {
-                    $result[$key] = 0;
+                    $result[$key] = $item;
                 }
-                $result[$key] += (int) $item;
+                $result[$key] += $item;
             }
         });
 
+        return $result;
+    }
+
+    public static function extractOverallUserScore(array $games, string $beefDataPath): array
+    {
+        $result = [];
+        foreach ($games as $game) {
+            $result = self::extractUserScore(self::load($beefDataPath, $game), $result);
+        }
         return $result;
     }
 

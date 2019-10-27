@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\BeefDataRepository;
+use App\Service\ScoreService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,11 +18,13 @@ class GameListController extends AbstractController
      */
     public function index(int $year): Response
     {
-        $beefDatapath = $this->getParameter('kernel.root_dir') . '/../games/';
-        //dd(BeefDataRepository::load($beefDatapath, $year));
+        $beefDataPath = $this->getParameter('kernel.root_dir') . '/../games/';
+        $games = BeefDataRepository::games($beefDataPath, $year);
+
         return $this->render('game_list/index.html.twig', [
             'year' => $year,
-            'gameList' => BeefDataRepository::games($beefDatapath, $year),
+            'gameList' => $games,
+            'sumScore'  => ScoreService::extractOverallUserScore($games, $beefDataPath)
         ]);
     }
 }
