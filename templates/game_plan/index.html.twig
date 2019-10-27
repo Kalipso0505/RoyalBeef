@@ -30,7 +30,7 @@
                 <td>Round</td><td>{{ loop.index }}</td>
                 {% for cell in row %}
                     <td>{{ cell }}</a></td>
-                    <td> <input name="result[{{ loop.parent.loop.index }}][{{ loop.index }}][{{ cell }}]" value="{{ score[loop.parent.loop.index][loop.index][cell] }}" type="number" min="0" max="{{ maxPoints }}" style="width: 40px;"></td>
+                    <td> <input name="result[{{ loop.parent.loop.index }}][{{ loop.index }}][{{ cell }}]" value="{% if score %} {{ score[loop.parent.loop.index][loop.index][cell] }} {% endif %}" type="number" min="1" max="{{ maxPoints }}" style="width: 40px;"></td>
                 {% endfor %}
                 </tr>{% endfor %}
             </tbody>
