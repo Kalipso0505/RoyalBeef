@@ -22,17 +22,16 @@ class GamePlanController extends AbstractController
      */
     public function index(int $year, string $game, string $type): Response
     {
-        $beefDatapath = $this->getParameter('kernel.root_dir') . '/../games/';
+        $beefDataPath = $this->getParameter('kernel.root_dir') . '/../games/';
+        $game         = urldecode($game);
 
         if (!empty($_REQUEST)) {
             $result = $_REQUEST['result'];
-            ScoreService::store($beefDatapath, $year, $game, $_REQUEST['result']);
+            ScoreService::store($beefDataPath, $year, $game, $_REQUEST['result']);
         } else {
-            $result = ScoreService::load($beefDatapath, $year, $game);
+            $result = ScoreService::load($beefDataPath, $year, $game);
         }
 
-        $game         = urldecode($game);
-        $beefDataPath = $this->getParameter('kernel.root_dir') . '/../games/';
         $playerList   = BeefDataRepository::player($beefDataPath, $year);
         $playerList   = array_map(static function ($item) {
             return ucfirst(str_replace('ae', 'ä', $item));
