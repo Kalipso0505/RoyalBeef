@@ -36,13 +36,19 @@ class MatchMaker
 
     public static function createGamePlan(array $playerList, int $gamerPerField): array
     {
-        if(count($playerList) < $gamerPerField) {
+        if (count($playerList) < $gamerPerField) {
             throw new \Exception('Too few player for this game.');
         }
 
-        $result = self::createGameRows($playerList, $gamerPerField);
+        $roundNr = 1;
+        $result  = self::createGameRows($playerList, $gamerPerField, $roundNr);
+        if (count($result) === 1) {
+            for($i=1; $i<4; ++$i) {
+                $result = array_merge($result, self::createGameRows($playerList, $gamerPerField, $roundNr));
+            }
+        }
         $headline = [];
-        for($i = 1; $i <= $gamerPerField; $i++) {
+        for ($i = 1; $i <= $gamerPerField; $i++) {
             $headline[] = 'Player ' . $i;
         }
 
@@ -51,24 +57,24 @@ class MatchMaker
         return $result;
     }
 
-    private static function createGameRows(array $playerList, int $gamerPerField, int $roundNr = 1): array
+    private static function createGameRows(array $playerList, int $gamerPerField, int &$roundNr = 1): array
     {
         $starters = array_slice($playerList, 0, $gamerPerField);
-        $rest = array_slice($playerList, $gamerPerField, count($playerList));
+        $rest     = array_slice($playerList, $gamerPerField, count($playerList));
 
-        $result = [];
+        $result   = [];
         $result[] = self::createRow($starters, $roundNr);
 
         foreach ($rest as $player) {
-            for($i = 1; $i < $gamerPerField; $i++) {
-                $newRow = $starters;
+            for ($i = 1; $i < $gamerPerField; $i++) {
+                $newRow     = $starters;
                 $newRow[$i] = $player;
-                $result[] = self::createRow($newRow, $roundNr);
+                $result[]   = self::createRow($newRow, $roundNr);
             }
         }
 
         array_shift($playerList);
-        if(count($playerList) >= $gamerPerField) {
+        if (count($playerList) >= $gamerPerField) {
             $result = array_merge($result, self::createGameRows($playerList, $gamerPerField, $roundNr));
         }
 
@@ -83,7 +89,7 @@ class MatchMaker
      */
     private static function createRow(array $players, &$roundNr): array
     {
-        foreach($players as $player) {
+        foreach ($players as $player) {
             $row[] = $player;
         }
 
