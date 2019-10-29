@@ -11,33 +11,38 @@ class ScoreServiceTest extends TestCase
 {
     public function testLoadNotExisting()
     {
-        self::assertEquals([], ScoreService::load(__DIR__ . '/../data/games/', 123, 'existiertNicht'));
+        self::assertEquals([], ScoreService::load(__DIR__ . '/../data/games/123', 'existiertNicht'));
     }
 
     public function testStore()
     {
         $input = $this->getTableData();
 
-        ScoreService::store(__DIR__ . '/../data/games/', 123, 'spiel name', $input);
+        ScoreService::store(__DIR__ . '/../data/games/123', 'spiel name', $input);
 
         $this->assertFileExists(__DIR__ . '/../data/games/' . 123 . '/gameSpiel_name.json');
 
-        self::assertEquals($input, ScoreService::load(__DIR__ . '/../data/games/', 123, 'spiel name'));
+        self::assertEquals($input, ScoreService::load(__DIR__ . '/../data/games/123/', 'spiel name'));
     }
 
     public function testScoreExtract()
     {
-        $scores = $this->getTableData();
-        $expected = [
-            'Bäerti' => 10,
-            'Kos' => 9,
-            'Rens' => 14,
-            'Joni' => 13,
-            'Chris' => 17,
+        $scores           = $this->getTableData();
+        $expected         = [
+            'Bäerti'  => 10,
+            'Kos'     => 9,
+            'Rens'    => 14,
+            'Joni'    => 13,
+            'Chris'   => 17,
             'Kalipso' => 9
         ];
         $extractUserScore = ScoreService::extractUserScore($scores);
         self::assertSame(ksort($expected), ksort($extractUserScore));
+    }
+
+    public function testOverallScore(): void
+    {
+        self::assertEquals(ScoreService::extractOverallUserScore(['anderes spiel name', 'spiel name', 'spielname'], __DIR__ . '/../data/games/123'), []);
     }
 
     /**
