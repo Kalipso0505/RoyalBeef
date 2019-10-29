@@ -24,7 +24,8 @@ class GameListController extends AbstractController
         return $this->render('game_list/index.html.twig', [
             'year' => $year,
             'gameList' => $games,
-            'sumScore'  => ScoreService::extractOverallUserScore($games, $beefDataPath)
+            'sumScore'  => ScoreService::extractOverallUserScore(array_keys($games), $beefDataPath . $year . '/')
         ]);
     }
 }
+
