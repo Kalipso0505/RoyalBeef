@@ -20,11 +20,20 @@ class GameListController extends AbstractController
     {
         $beefDataPath = $this->getParameter('kernel.root_dir') . '/../games/';
         $games = BeefDataRepository::games($beefDataPath, $year);
+        $playerList = BeefDataRepository::player($beefDataPath, $year);
+
+        $extractOverallUserScore = ScoreService::extractOverallUserScore(
+            array_keys($games),
+            $beefDataPath . $year . '/',
+            count($playerList)
+        );
+        $gamerPerField = count(BeefDataRepository::player($beefDataPath, $year));
+        $extractOverallUserScore = ScoreService::addScore($extractOverallUserScore, $gamerPerField, true);
 
         return $this->render('game_list/index.html.twig', [
             'year' => $year,
             'gameList' => $games,
-            'sumScore'  => ScoreService::extractOverallUserScore(array_keys($games), $beefDataPath . $year . '/')
+            'sumScore' => $extractOverallUserScore
         ]);
     }
 }

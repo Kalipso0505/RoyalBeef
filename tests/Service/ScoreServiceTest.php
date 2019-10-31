@@ -9,12 +9,12 @@ use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 
 class ScoreServiceTest extends TestCase
 {
-    public function testLoadNotExisting()
+    public function testLoadNotExisting(): void
     {
         self::assertEquals([], ScoreService::load(__DIR__ . '/../data/games/123', 'existiertNicht'));
     }
 
-    public function testStore()
+    public function testStore(): void
     {
         $input = $this->getTableData();
 
@@ -25,24 +25,46 @@ class ScoreServiceTest extends TestCase
         self::assertEquals($input, ScoreService::load(__DIR__ . '/../data/games/123/', 'spiel name'));
     }
 
-    public function testScoreExtract()
+    public function testResultExtract(): void
     {
         $scores           = $this->getTableData();
         $expected         = [
-            'Bäerti'  => 10,
-            'Kos'     => 9,
+            'Chris'   => 17,
             'Rens'    => 14,
             'Joni'    => 13,
-            'Chris'   => 17,
+            'Baerti'  => 10,
+            'Kos'     => 9,
             'Kalipso' => 9
         ];
-        $extractUserScore = ScoreService::extractUserScore($scores);
+        $extractUserScore = ScoreService::extractUserResults($scores);
         self::assertSame(ksort($expected), ksort($extractUserScore));
+    }
+
+    public function testAddScore(): void
+    {
+        $in = [
+            'Chris'   => 17,
+            'Rens'    => 14,
+            'Joni'    => 13,
+            'Baerti'  => 10,
+            'Kos'     => 9,
+            'Kalipso' => 9
+        ];
+
+        $out = [
+            'Chris'   => ['result' => 17, 'score' => 5],
+            'Rens'    => ['result' => 14, 'score' => 4],
+            'Joni'    => ['result' => 13, 'score' => 3],
+            'Baerti'  => ['result' => 10, 'score' => 2],
+            'Kos'     => ['result' => 9, 'score' => 1],
+            'Kalipso' => ['result' => 9, 'score' => 1]
+        ];
+        self::assertEquals(ScoreService::addScore($in, 6), $out);
     }
 
     public function testOverallScore(): void
     {
-        self::assertEquals(ScoreService::extractOverallUserScore(['anderes spiel name', 'spiel name', 'spielname'], __DIR__ . '/../data/games/123'), []);
+        #self::assertEquals(ScoreService::extractOverallUserScore(['anderes spiel name', 'spiel name', 'spielname'], __DIR__ . '/../data/games/123'), []);
     }
 
     /**
@@ -52,76 +74,76 @@ class ScoreServiceTest extends TestCase
     {
         return ['result' => [
             '1'  =>
-                ['1' => ['Kalipso' => '0'],
-                 '2' => ['Joni' => '1'],
-                 '3' => ['Chris' => '2'],
-                 '4' => ['Rens' => '3'],
+                ['1' => ['Kalipso' => '1'],
+                 '2' => ['Joni' => '2'],
+                 '3' => ['Chris' => '3'],
+                 '4' => ['Rens' => '4'],
                 ],
             '2'  => [
-                '1' => ['Kalipso' => '3'],
-                '2' => ['Kos' => '2'],
-                '3' => ['Chris' => '1'],
-                '4' => ['Rens' => '0'],
+                '1' => ['Kalipso' => '4'],
+                '2' => ['Kos' => '3'],
+                '3' => ['Chris' => '2'],
+                '4' => ['Rens' => '1'],
             ],
             '3'  => [
-                '1' => ['Kalipso' => '2',],
-                '2' => ['Joni' => '1'],
-                '3' => ['Kos' => '0'],
-                '4' => ['Rens' => '3'],
+                '1' => ['Kalipso' => '3',],
+                '2' => ['Joni' => '2'],
+                '3' => ['Kos' => '1'],
+                '4' => ['Rens' => '4'],
             ],
             '4'  => [
-                '1' => ['Kalipso' => '1'],
-                '2' => ['Joni' => '0'],
-                '3' => ['Chris' => '2'],
-                '4' => ['Kos' => '3'],
+                '1' => ['Kalipso' => '2'],
+                '2' => ['Joni' => '1'],
+                '3' => ['Chris' => '3'],
+                '4' => ['Kos' => '4'],
             ],
             '5'  => [
-                '1' => ['Kalipso' => '0'],
-                '2' => ['Bärti' => '1'],
-                '3' => ['Chris' => '2'],
-                '4' => ['Rens' => '3'],
+                '1' => ['Kalipso' => '1'],
+                '2' => ['Bärti' => '2'],
+                '3' => ['Chris' => '3'],
+                '4' => ['Rens' => '4'],
             ],
             '6'  => [
-                '1' => ['Kalipso' => '1'],
-                '2' => ['Joni' => '2'],
-                '3' => ['Bärti' => '3'],
-                '4' => ['Rens' => '0'],
-            ],
-            '7'  => [
                 '1' => ['Kalipso' => '2'],
                 '2' => ['Joni' => '3'],
-                '3' => ['Chris' => '0'],
-                '4' => ['Bärti' => '1'],
+                '3' => ['Bärti' => '4'],
+                '4' => ['Rens' => '1'],
+            ],
+            '7'  => [
+                '1' => ['Kalipso' => '3'],
+                '2' => ['Joni' => '4'],
+                '3' => ['Chris' => '1'],
+                '4' => ['Bärti' => '2'],
             ],
             '8'  => [
-                '1' => ['Joni' => '3'],
-                '2' => ['Chris' => '2'],
-                '3' => ['Rens' => '1'],
-                '4' => ['Kos' => '0'],
+                '1' => ['Joni' => '4'],
+                '2' => ['Chris' => '3'],
+                '3' => ['Rens' => '2'],
+                '4' => ['Kos' => '1'],
             ],
             '9'  => [
-                '1' => ['Joni' => '0'],
-                '2' => ['Bärti' => '1'],
-                '3' => ['Rens' => '2'],
-                '4' => ['Kos' => '3'],
+                '1' => ['Joni' => '1'],
+                '2' => ['Bärti' => '2'],
+                '3' => ['Rens' => '3'],
+                '4' => ['Kos' => '4'],
             ],
             '10' => [
-                '1' => ['Joni' => '1'],
-                '2' => ['Chris' => '2'],
-                '3' => ['Bärti' => '3'],
-                '4' => ['Kos' => '0'],
-            ],
-            '11' => [
                 '1' => ['Joni' => '2'],
                 '2' => ['Chris' => '3'],
-                '3' => ['Rens' => '0'],
-                '4' => ['Bärti' => '1'],
+                '3' => ['Bärti' => '4'],
+                '4' => ['Kos' => '1'],
+            ],
+            '11' => [
+                '1' => ['Joni' => '3'],
+                '2' => ['Chris' => '4'],
+                '3' => ['Rens' => '1'],
+                '4' => ['Bärti' => '2'],
             ],
             '12' => [
-                '1' => ['Chris' => '3'],
-                '2' => ['Rens' => '2'],
-                '3' => ['Kos' => '1'],
-                '4' => ['Bärti' => '0'],
+                '1' => ['Chris' => '4'],
+                '2' => ['Rens' => '3'],
+                '3' => ['Kos' => '2'],
+                '4' => ['Bärti' => '1'],
             ],
         ],
         ];

@@ -39,13 +39,15 @@ class GamePlanController extends AbstractController
 
         $gamerPerField    = rtrim($type, 'p');
         $matchMakingTable = MatchMaker::createGamePlan($playerList, $gamerPerField);
+        $extractUserResults = ScoreService::extractUserResults($result);
+        $extractUserResults = ScoreService::addScore($extractUserResults, count($playerList), true);
 
         return $this->render('game_plan/index.html.twig', [
             'game'      => $game,
             'gamePlan'  => $matchMakingTable,
             'score'     => $result,
             'maxPoints' => $gamerPerField,
-            'sumScore'  => ScoreService::extractUserScore($result)
+            'sumScore'  => $extractUserResults
         ]);
     }
 }
