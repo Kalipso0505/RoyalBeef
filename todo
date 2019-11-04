@@ -1,0 +1,14 @@
+ - randomize matches
+ - Punkteauswertung
+ - mehr Spiele für Worms
+ - Punkteübersicht overall
+ - kleineres Matchmaking $P-Games
+ - valid ranking insert
+
+
+ Next:
+ - Customize your new authenticator.
+ - Finish the redirect "TODO" in the App\Security\LoginAuthenticator::onAuthenticationSuccess() method.
+ - Review App\Security\LoginAuthenticator::getUser() to make sure it matches your needs.
+ - Check the user's password in App\Security\LoginAuthenticator::checkCredentials().
+ - Review & adapt the login template: templates/security/login.html.twig.
