@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class WelcomeController extends AbstractController
 {
     /**
-     * @Route("/", name="welcome")
+     * @Route("/welcome", name="welcome")
      */
     public function index(): Response
     {
