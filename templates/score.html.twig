@@ -1,15 +1,14 @@
-    <table class="table table-sm table-dark table-bordered table-striped">
-        <caption>SpielrundenergebnisseSummiert</caption>
-        <thead class="thead-light">
+    <table class="table table-dark text-info col-4 float-right">
+        <thead>
         <tr>
-            <th>Player</th>
-            <th>Score (points earned)</th>
+            <th scope="col">Player</th>
+            <th scope="col">Score (points earned)</th>
         </tr>
         </thead>
         <tbody>
         {% for player,results in sumScore %}
             <tr>
-            <td>{{ player }}</td><td>{{ results.result }} ({{ results.score }})</td>
+            <td class="text-light">{{ player }}</td><td class="text-light">{{ results.result }} ({{ results.score }})</td>
             </tr>{% endfor %}
         </tbody>
     </table>

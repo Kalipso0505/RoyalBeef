@@ -1,13 +1,12 @@
     <table class="table table-sm table-dark table-bordered table-striped">
-        <caption>Spielrundenergebnisse</caption>
-        <thead class="thead-light">
+        <thead>
         <tr>
             <th scope="col" colspan="2">#</th>
             {% for cell in gamePlan|first %}            <th scope="col" colspan="2">{{ cell }}</th>
             {% endfor %}
         </tr>
         </thead>
-        <tbody>
+        <tbody class="text-light">
         {% for row in gamePlan|slice(1) %}
             <tr>
             <td>Round</td><td>{{ loop.index }}</td>

@@ -4,40 +4,9 @@
 {% block stylesheets %}{% endblock %}
 {% block body %}
 {% set i = 0 %}
-        <div class="row mt-1 rounded mx-auto d-block">
-            <img src="{{ asset('avatars/beerbeef.jpg') }}" class="w-25 rounded img-thumbnail">
-        </div>
-        <div class="row mt-1">
+        <div class="row mt-2">
             <div class="col">
-{% set avatars = avatars1 %}
-{% include "welcome/gallerie.twig" %}
-            </div>
-            <div class="col">
-{% set avatars = avatars2 %}
-{% include "welcome/gallerie.twig" %}
-            </div>
-            <div class="col">
-{% set avatars = avatars3 %}
-{% include "welcome/gallerie.twig" %}
-            </div>
-        </div>
-        <div class="row mt-1">
-            <div class="col">
-{% set avatars = avatars4 %}
-{% include "welcome/gallerie.twig" %}
-            </div>
-            <div class="col">
-{% set avatars = avatars5 %}
-{% include "welcome/gallerie.twig" %}
-            </div>
-            <div class="col">
-{% set avatars = avatars6 %}
-{% include "welcome/gallerie.twig" %}
-            </div>
-        </div>
-        <div class="row mt-5">
-            <div class="col">
-                <a class="btn bg-light font-weight-bolder" href="{{ path('beef') }}" role="button">Lets beef</a>
+                <a class="btn bg-dark font-weight-bolder text-light" href="{{ path('beef') }}" role="button">Lets beef</a>
             </div>
         </div>
 {% endblock %}

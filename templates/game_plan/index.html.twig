@@ -2,18 +2,14 @@
 
 {% block title %}Spielrundenergebnisse{% endblock %}
 
-{% block javascripts %}<script src="extensions/editable/bootstrap-table-editable.js"></script>{% endblock %}
-
 {% block body %}
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item" aria-current="page"><a href="{{ path('beef') }}">Beefs</a></li>
             <li class="breadcrumb-item" aria-current="page"><a href="{{ path('game_list', {'year': '2019'}) }}">Spiele</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Runden</li>
+            <li class="breadcrumb-item active" aria-current="page">{{ game }}</li>
         </ol>
     </nav>
-    <h1 class="text-primary">{{ game }}</h1>
-
     <form>
         {% if gamerPerField == 1 %}
             {% for i in 0..2 %}
@@ -23,7 +19,7 @@
             {%  set i = 0 %}
             {{ include('round.html.twig') }}
         {% endif %}
-        <button type="submit" class="btn btn-primary mb-5">Submit</button>
+        <button type="submit" class="btn bg-dark font-weight-bolder text-light float-left mb-5">Submit</button>
     </form>
 
 {{ include('score.html.twig') }}

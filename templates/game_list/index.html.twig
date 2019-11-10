@@ -9,9 +9,7 @@
             <li class="breadcrumb-item active" aria-current="page">Games</li>
         </ol>
     </nav>
-    <h1 class="text-primary">Games</h1>
-
-    <table class="table text-info table-hover">
+    <table class="table table-dark text-info table-hover col-4 float-left">
         <thead>
         <tr>
             <th scope="col">Game</th>
@@ -21,11 +19,13 @@
         <tbody>
         {% for game, type in gameList %}
             <tr>
-                <td><a href="{{ path('game_plan', {'year': year, 'game': game|url_encode, 'type': type}) }}">{{ game }}</a></td>
-                <td><a href="{{ path('game_plan', {'year': year, 'game': game|url_encode, 'type': type}) }}">{{ type }}</a></td>
+            <td><a href="{{ path('game_plan', {'year': year, 'game': game|url_encode, 'type': type}) }}" class="text-light">{{ game }}</a>
+            </td>
+            <td><a href="{{ path('game_plan', {'year': year, 'game': game|url_encode, 'type': type}) }}" class="text-light">{{ type }}</a>
+            </td>
             </tr>{% endfor %}
         </tbody>
     </table>
 
-{{ include('score.html.twig') }}
+    {{ include('score.html.twig') }}
 {% endblock %}
