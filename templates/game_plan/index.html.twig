@@ -15,27 +15,15 @@
     <h1 class="text-primary">{{ game }}</h1>
 
     <form>
-        <table class="table table-sm table-dark table-bordered table-striped">
-            <caption>Spielrundenergebnisse</caption>
-            <thead class="thead-light">
-            <tr>
-                <th scope="col" colspan="2">#</th>
-{% for cell in gamePlan|first %}            <th scope="col" colspan="2">{{ cell }}</th>
-{% endfor %}
-            </tr>
-            </thead>
-            <tbody>
-            {% for row in gamePlan|slice(1) %}
-                <tr>
-                <td>Round</td><td>{{ loop.index }}</td>
-                {% for cell in row %}
-                    <td>{{ cell }}</a></td>
-                    <td> <input name="result[{{ loop.parent.loop.index }}][{{ loop.index }}][{{ cell }}]" value="{% if score %}{{ score[loop.parent.loop.index][loop.index][cell] }}{% endif %}" type="number" min="1" max="{{ maxPoints }}" style="width: 40px;"></td>
-                {% endfor %}
-                </tr>{% endfor %}
-            </tbody>
-        </table>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        {% if gamerPerField == 1 %}
+            {% for i in 0..2 %}
+                {{ include('round.html.twig') }}
+            {% endfor %}
+        {% else %}
+            {%  set i = 0 %}
+            {{ include('round.html.twig') }}
+        {% endif %}
+        <button type="submit" class="btn btn-primary mb-5">Submit</button>
     </form>
 
 {{ include('score.html.twig') }}

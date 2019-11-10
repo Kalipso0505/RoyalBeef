@@ -1,0 +1,20 @@
+    <table class="table table-sm table-dark table-bordered table-striped">
+        <caption>Spielrundenergebnisse</caption>
+        <thead class="thead-light">
+        <tr>
+            <th scope="col" colspan="2">#</th>
+            {% for cell in gamePlan|first %}            <th scope="col" colspan="2">{{ cell }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in gamePlan|slice(1) %}
+            <tr>
+            <td>Round</td><td>{{ loop.index }}</td>
+            {% for cell in row %}
+                <td>{{ cell }}</a></td>
+                <td> <input name="result[{{ i }}][{{ loop.parent.loop.index }}][{{ loop.index }}][{{ cell }}]" value="{% if score %}{{ score[i][loop.parent.loop.index][loop.index][cell] }}{% endif %}" type="number" min="1" max="{{ maxPoints }}" style="width: 40px;"></td>
+            {% endfor %}
+            </tr>{% endfor %}
+        </tbody>
+    </table>

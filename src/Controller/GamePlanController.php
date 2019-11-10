@@ -46,8 +46,9 @@ class GamePlanController extends AbstractController
             'game'      => $game,
             'gamePlan'  => $matchMakingTable,
             'score'     => $result,
-            'maxPoints' => $gamerPerField,
-            'sumScore'  => $extractUserResults
+            'maxPoints' => $gamerPerField == 1 ? count($playerList) : $gamerPerField,
+            'gamerPerField' => $gamerPerField,
+            'sumScore'  => $extractUserResults,
         ]);
     }
 }
