@@ -26,8 +26,8 @@ class GamePlanController extends AbstractController
         $game         = urldecode($game);
 
         if (!empty($_REQUEST)) {
-            $result = $_REQUEST['result'];
-            ScoreService::store($beefDataPath . $year, $game, $_REQUEST['result']);
+            $result = $_REQUEST['result'] ?? [];
+            ScoreService::store($beefDataPath . $year, $game, $result);
         } else {
             $result = ScoreService::load($beefDataPath . $year, $game);
         }
