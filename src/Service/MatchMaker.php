@@ -42,7 +42,7 @@ class MatchMaker
 
         $roundNr = 1;
         $result  = self::createGameRows($playerList, $gamerPerField, $roundNr);
-        if (count($result) === 1) {
+        if (count($playerList) == $gamerPerField) {
             for($i=1; $i<4; ++$i) {
                 $result = array_merge($result, self::createGameRows($playerList, $gamerPerField, $roundNr));
             }
