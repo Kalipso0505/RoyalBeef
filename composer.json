@@ -22,7 +22,7 @@
         "symfony/orm-pack": "*",
         "symfony/process": "4.3.*",
         "symfony/routing": "4.3.*",
-        "symfony/security": "4.3.*",
+        "symfony/security": "^4.3",
         "symfony/security-bundle": "4.3.*",
         "symfony/serializer-pack": "*",
         "symfony/swiftmailer-bundle": "^3.1",
