@@ -48,8 +48,12 @@ class MatchMaker
             }
         }
         $headline = [];
-        for ($i = 1; $i <= $gamerPerField; $i++) {
-            $headline[] = 'Player ' . $i;
+        if ($gamerPerField === 1) {
+            $headline[] = 'Position';
+        } else {
+            for ($i = 1; $i <= $gamerPerField; $i++) {
+                $headline[] = 'Player ' . $i;
+            }
         }
 
         array_unshift($result, $headline);

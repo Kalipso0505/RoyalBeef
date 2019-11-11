@@ -9,23 +9,27 @@
             <li class="breadcrumb-item active" aria-current="page">Games</li>
         </ol>
     </nav>
-    <table class="table table-dark text-info table-hover col-4 float-left">
-        <thead>
-        <tr>
-            <th scope="col">Game</th>
-            <th scope="col">Type</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for game, type in gameList %}
-            <tr>
-            <td><a href="{{ path('game_plan', {'year': year, 'game': game|url_encode, 'type': type}) }}" class="text-light">{{ game }}</a>
-            </td>
-            <td><a href="{{ path('game_plan', {'year': year, 'game': game|url_encode, 'type': type}) }}" class="text-light">{{ type }}</a>
-            </td>
-            </tr>{% endfor %}
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col-3">
+            <table class="table table-dark text-info table-hover float-left">
+                <thead>
+                <tr>
+                    <th scope="col">Game</th>
+                    <th scope="col">Type</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for game, type in gameList %}
+                    <tr>
+                    <td><a href="{{ path('game_plan', {'year': year, 'game': game|url_encode, 'type': type}) }}" class="text-light">{{ game }}</a>
+                    </td>
+                    <td><a href="{{ path('game_plan', {'year': year, 'game': game|url_encode, 'type': type}) }}" class="text-light">{{ type }}</a>
+                    </td>
+                    </tr>{% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {{ include('score.html.twig') }}
+    </div>
 
-    {{ include('score.html.twig') }}
 {% endblock %}

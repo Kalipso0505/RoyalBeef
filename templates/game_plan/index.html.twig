@@ -6,21 +6,27 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item" aria-current="page"><a href="{{ path('beef') }}">Beefs</a></li>
-            <li class="breadcrumb-item" aria-current="page"><a href="{{ path('game_list', {'year': '2019'}) }}">Spiele</a></li>
+            <li class="breadcrumb-item" aria-current="page"><a
+                        href="{{ path('game_list', {'year': '2019'}) }}">Spiele</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ game }}</li>
         </ol>
     </nav>
     <form>
-        {% if gamerPerField == 1 %}
-            {% for i in 0..2 %}
+        <div class="row pl-2">
+            {% if gamerPerField == 1 %}
+                {% for i in 0..2 %}
+                    {{ include('round.html.twig') }}
+                {% endfor %}
+            {% else %}
+                {% set i = 0 %}
                 {{ include('round.html.twig') }}
-            {% endfor %}
-        {% else %}
-            {%  set i = 0 %}
-            {{ include('round.html.twig') }}
-        {% endif %}
-        <button type="submit" class="btn bg-dark font-weight-bolder text-light float-left mb-5">Submit</button>
+            {% endif %}
+        </div>
+        <div class="row pl-3">
+            <button type="submit" class="btn bg-dark font-weight-bolder text-light mb-3 float-left">Submit</button>
+        </div>
     </form>
-
-{{ include('score.html.twig') }}
+    <div class="row pl-3">
+        {{ include('score.html.twig') }}
+    </div>
 {% endblock %}
