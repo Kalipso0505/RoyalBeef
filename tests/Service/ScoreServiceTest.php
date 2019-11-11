@@ -40,28 +40,6 @@ class ScoreServiceTest extends TestCase
         self::assertSame(ksort($expected), ksort($extractUserScore));
     }
 
-    public function testAddScore(): void
-    {
-        $in = [
-            'Chris'   => 17,
-            'Rens'    => 14,
-            'Joni'    => 13,
-            'Baerti'  => 10,
-            'Kos'     => 9,
-            'Kalipso' => 9
-        ];
-
-        $out = [
-            'Chris'   => ['result' => 17, 'score' => 5],
-            'Rens'    => ['result' => 14, 'score' => 4],
-            'Joni'    => ['result' => 13, 'score' => 3],
-            'Baerti'  => ['result' => 10, 'score' => 2],
-            'Kos'     => ['result' => 9, 'score' => 1],
-            'Kalipso' => ['result' => 9, 'score' => 1]
-        ];
-        self::assertEquals(ScoreService::addScore($in, 6), $out);
-    }
-
     public function testOverallScore(): void
     {
         #self::assertEquals(ScoreService::extractOverallUserScore(['anderes spiel name', 'spiel name', 'spielname'], __DIR__ . '/../data/games/123'), []);

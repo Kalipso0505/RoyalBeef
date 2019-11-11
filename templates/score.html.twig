@@ -2,13 +2,13 @@
         <thead>
         <tr>
             <th scope="col">Player</th>
-            <th scope="col">Score (points earned)</th>
+            <th scope="col">Score</th>
         </tr>
         </thead>
         <tbody>
         {% for player,results in sumScore %}
             <tr>
-            <td class="text-light">{{ player }}</td><td class="text-light">{{ results.result }} ({{ results.score }})</td>
+            <td class="text-light">{{ player }}</td><td class="text-light">{{ results.score }}</td>
             </tr>{% endfor %}
         </tbody>
     </table>

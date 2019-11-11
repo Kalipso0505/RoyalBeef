@@ -23,12 +23,10 @@ class GameListController extends AbstractController
         $playerList = BeefDataRepository::player($beefDataPath, $year);
 
         $extractOverallUserScore = ScoreService::extractOverallUserScore(
-            array_keys($games),
+            $games,
             $beefDataPath . $year . '/',
             count($playerList)
         );
-        $gamerPerField = count(BeefDataRepository::player($beefDataPath, $year));
-        $extractOverallUserScore = ScoreService::addScore($extractOverallUserScore, $gamerPerField, true);
 
         return $this->render('game_list/index.html.twig', [
             'year' => $year,

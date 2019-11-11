@@ -53,18 +53,23 @@ class ScoreService
      * @param array $data
      *
      *
+     * @param int $maxScore
      * @return array
      */
-    public static function extractUserResults(array $data): array
+    public static function extractUserResults(array $data, int $maxScore): array
     {
         $result = [];
-        array_walk_recursive($data, static function ($item, $key) use (&$result) {
-            if (!is_array($item)) {
-                $item = ($item === '') ? 0 : ((int) $item) - 1;
-                if (!array_key_exists($key, $result)) {
-                    $result[$key] = $item;
+        array_walk_recursive($data, static function ($position, $player) use (&$result, $maxScore) {
+            if (!is_array($position) && $position !== '') {
+                $score = $maxScore - $position;
+                if (!array_key_exists($player, $result)) {
+                    $result[$player]['score'] = $score;
+                    $result[$player]['positions'][$position] = 1;
                 } else {
-                    $result[$key] += $item;
+                    $result[$player]['score'] += $score;
+                    array_key_exists($position, $result[$player]['positions']) ?
+                        ++$result[$player]['positions'][$position] :
+                        $result[$player]['positions'][$position] = 1;
                 }
             }
         });
@@ -72,20 +77,26 @@ class ScoreService
         return $result;
     }
 
-    public static function extractOverallUserScore(array $games, string $beefDataPath, int $playerInCompetition): array
+    /**
+     * @param array $games
+     * @param string $beefDataPath
+     * @param int $playerCount
+     * @return array
+     */
+    public static function extractOverallUserScore(array $games, string $beefDataPath, int $playerCount): array
     {
         $result = [];
-        foreach ($games as $game) {
-            $scores = self::addScore(
-                self::extractUserResults(self::load($beefDataPath, $game)),
-                $playerInCompetition,
-                false
-            );
+        foreach (array_keys($games) as $game) {
+            $gamerPerField = (int)rtrim($games[$game], 'p');
+            $maxPoints = $gamerPerField === 1 ? $playerCount : $gamerPerField;
+            $scores = self::extractUserResults(self::load($beefDataPath, $game), $maxPoints);
             foreach ($scores as $player => $score) {
                 if(array_key_exists($player,$result)) {
-                    $result[$player] += $score ;
+                    $result[$player]['score'] += $score['score'] ?? 0;
+                    $result[$player]['positions'] = self::arraySum($score['positions'] ?? [], $result[$player]['positions'] ?? []);
                 } else {
-                    $result[$player] = $score ;
+                    $result[$player]['score'] = $score['score'] ;
+                    $result[$player]['positions'] = $score['positions'];
                 }
             }
         }
@@ -104,31 +115,18 @@ class ScoreService
     }
 
     /**
-     * @param array $playersResults
-     * @param int $playerInCompetition
-     *
-     * @param bool $apply
+     * @param array $array1
+     * @param array $array2
      * @return array
      */
-    public static function addScore(array $playersResults, int $playerInCompetition, bool $apply): array
+    private static function arraySum(array $array1, array $array2)
     {
-        arsort($playersResults);
-        $result     = [];
-        $lastResult = 0;
-        --$playerInCompetition;
-        foreach ($playersResults as $player => $playersResult) {
-            if ($playersResult < $lastResult) {
-                --$playerInCompetition;
-            }
-            if($apply) {
-                $result[$player]['result'] = $playersResult;
-                $result[$player]['score'] = $playerInCompetition;
-            } else {
-                $result[$player] = $playerInCompetition;
-            }
-            $lastResult = $playersResult;
+        $result = [];
+        $keys = array_merge(array_keys($array1), array_keys($array2));
+        asort($keys);
+        foreach ($keys as $key) {
+            $result[$key] = ($array1[$key] ?? 0) + ($array2[$key] ?? 0);
         }
-
         return $result;
     }
 }
