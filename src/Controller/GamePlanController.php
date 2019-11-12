@@ -42,7 +42,7 @@ class GamePlanController extends AbstractController
         $maxPoints = $gamerPerField === 1 ? count($playerList) : $gamerPerField;
 
         $matchMakingTable = MatchMaker::createGamePlan($playerList, $gamerPerField);
-        $extractUserResults = ScoreService::extractUserResults($result, $maxPoints);
+        $extractUserResults = ScoreService::extractUserResults($result, $maxPoints, count($playerList));
 
         return $this->render('game_plan/index.html.twig', [
             'game' => $game,

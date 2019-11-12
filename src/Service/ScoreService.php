@@ -12,13 +12,13 @@ class ScoreService
     /**
      * @param string $path
      * @param string $game
-     * @param array  $data
+     * @param array $data
      *
      * @return bool
      */
     public static function store(string $path, string $game, array $data): bool
     {
-        $game           = self::game2FileName($game);
+        $game = self::game2FileName($game);
         $gameResultPath = "$path/$game.json";
 
         $success = file_put_contents($gameResultPath, json_encode($data));
@@ -34,7 +34,7 @@ class ScoreService
      */
     public static function load(string $path, string $game): array
     {
-        $game           = self::game2FileName($game);
+        $game = self::game2FileName($game);
         $gameResultPath = "$path/$game.json";
 
         if (!file_exists($gameResultPath)) {
@@ -56,7 +56,7 @@ class ScoreService
      * @param int $maxScore
      * @return array
      */
-    public static function extractUserResults(array $data, int $maxScore): array
+    public static function extractUserResults(array $data, int $maxScore, int $playerCount): array
     {
         $result = [];
         array_walk_recursive($data, static function ($position, $player) use (&$result, $maxScore) {
@@ -74,6 +74,8 @@ class ScoreService
             }
         });
         arsort($result);
+        $result = self::addTotalScore($result, $playerCount);
+
         return $result;
     }
 
@@ -89,13 +91,13 @@ class ScoreService
         foreach (array_keys($games) as $game) {
             $gamerPerField = (int)rtrim($games[$game], 'p');
             $maxPoints = $gamerPerField === 1 ? $playerCount : $gamerPerField;
-            $scores = self::extractUserResults(self::load($beefDataPath, $game), $maxPoints);
+            $scores = self::extractUserResults(self::load($beefDataPath, $game), $maxPoints, $playerCount);
             foreach ($scores as $player => $score) {
-                if(array_key_exists($player,$result)) {
-                    $result[$player]['score'] += $score['score'] ?? 0;
+                if (array_key_exists($player, $result)) {
+                    $result[$player]['score'] += $score['total'] ?? 0;
                     $result[$player]['positions'] = self::arraySum($score['positions'] ?? [], $result[$player]['positions'] ?? []);
                 } else {
-                    $result[$player]['score'] = $score['score'] ;
+                    $result[$player]['score'] = $score['total'];
                     $result[$player]['positions'] = $score['positions'];
                 }
             }
@@ -119,7 +121,7 @@ class ScoreService
      * @param array $array2
      * @return array
      */
-    private static function arraySum(array $array1, array $array2)
+    private static function arraySum(array $array1, array $array2): array
     {
         $result = [];
         $keys = array_merge(array_keys($array1), array_keys($array2));
@@ -127,6 +129,27 @@ class ScoreService
         foreach ($keys as $key) {
             $result[$key] = ($array1[$key] ?? 0) + ($array2[$key] ?? 0);
         }
+        return $result;
+    }
+
+    /**
+     * @param array $result
+     * @param int $playerCount
+     * @return array
+     */
+    private static function addTotalScore(array $result, int $playerCount): array
+    {
+        $i = 1;
+        $oldScore = 1000;
+        foreach ($result as $player => $points) {
+            $actualScore = $playerCount - $i;
+            $result[$player]['total'] = $actualScore;
+            if($oldScore > $actualScore) {
+                ++$i;
+            }
+            $oldScore = $actualScore;
+        }
+
         return $result;
     }
 }
