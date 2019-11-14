@@ -1,14 +1,20 @@
-    <table class="table table-dark text-info col-2">
-        <thead>
+<table class="table table-dark text-info col-2">
+    <thead>
+    <tr>
+        <th scope="col">Player</th>
+        {% if sumScore|first.total is defined %}
+            <th scope="col">Total</th>{% endif %}
+        {% if sumScore|first.score is defined %}
+            <th scope="col">Score</th>{% endif %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for player,results in sumScore %}
         <tr>
-            <th scope="col">Player</th>
-            <th scope="col">Score</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for player,results in sumScore %}
-            <tr>
-            <td class="text-light">{{ player }}</td><td class="text-light">{{ results.score }}</td>
-            </tr>{% endfor %}
-        </tbody>
-    </table>
+        <td class="text-light">{{ player }}</td>
+        {% if results.total is defined %}
+            <td class="text-danger">{{ results.total }}</td>{% endif %}{% if results.score is defined %}
+        <td class="text-light">{{ results.score }}</td>{% endif %}
+        </tr>{% endfor %}
+    </tbody>
+</table>

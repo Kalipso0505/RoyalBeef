@@ -94,12 +94,13 @@ class ScoreService
             $scores = self::extractUserResults(self::load($beefDataPath, $game), $maxPoints, $playerCount);
             foreach ($scores as $player => $score) {
                 if (array_key_exists($player, $result)) {
-                    $result[$player]['score'] += $score['total'] ?? 0;
+                    $result[$player]['total'] += $score['total'] ?? 0;
                     $result[$player]['positions'] = self::arraySum($score['positions'] ?? [], $result[$player]['positions'] ?? []);
                 } else {
-                    $result[$player]['score'] = $score['total'];
+                    $result[$player]['total'] = $score['total'];
                     $result[$player]['positions'] = $score['positions'];
                 }
+                unset($result[$player]['score']);
             }
         }
 
