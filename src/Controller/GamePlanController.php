@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Service\BeefDataRepository;
 use App\Service\MatchMaker;
+use App\Service\RandomRoundService;
 use App\Service\ScoreService;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -44,6 +45,7 @@ class GamePlanController extends AbstractController
         $matchMakingTable = MatchMaker::createGamePlan($playerList, $gamerPerField);
         $extractUserResults = ScoreService::extractUserResults($result, $maxPoints, count($playerList));
 
+        $unplayedMatches = RandomRoundService::get($result);
         return $this->render('game_plan/index.html.twig', [
             'game' => $game,
             'gamePlan' => $matchMakingTable,
@@ -51,6 +53,7 @@ class GamePlanController extends AbstractController
             'maxPoints' => $maxPoints,
             'gamerPerField' => $gamerPerField,
             'sumScore' => $extractUserResults,
+            'random' => $unplayedMatches === [] ? count($matchMakingTable) : $unplayedMatches[array_rand($unplayedMatches)]
         ]);
     }
 }

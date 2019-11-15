@@ -1,0 +1,23 @@
+    <table class="table table-sm table-dark table-bordered table-striped col-{{ gamerPerField * 2 }} ml-2">
+        <thead>
+        <tr>
+            {% if gamerPerField != 1 %}<th scope="col">#</th>{% endif %}
+            {% for cell in gamePlan|first %}<th scope="col">{{ cell }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody class="text-light">
+        {% for row in gamePlan|slice(1) %}
+            <tr>
+            {% if gamerPerField != 1 %}
+            <td>Round {{ loop.index }}</td>
+            {% endif %}
+            {% for cell in row %}
+                <td>
+                    {{ cell }}
+                    <input class="float-right" name="result[{{ i }}][{{ loop.parent.loop.index }}][{{ loop.index }}][{{ cell }}]" value="{% if score %}{{ score[i][loop.parent.loop.index][loop.index][cell] }}{% endif %}" type="number" min="1" max="{{ maxPoints }}" style="width: 40px;">
+                </td>
+            {% endfor %}
+            </tr>{% endfor %}
+        </tbody>
+    </table>
