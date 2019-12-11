@@ -28,5 +28,8 @@
     </form>
     <div class="row pl-3">
         {{ include('score.html.twig') }}
+        <div class="alert alert—check bg-info ml-2" style="height: 50px" role="alert">
+            Next Match {{ random }}
+        </div>
     </div>
 {% endblock %}
