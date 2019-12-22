@@ -15,7 +15,15 @@
                 <h5 class="card-title">2019</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Braunlage</h6>
                 <p class="card-text">Kalipso, Joni, Chris, Rens, Kos, Bärti</p>
-                <a href="{{ path('game_list', {'year': 2019}) }}" class="card-link">Load</a>
+                <a href="{{ path('gallery', {'year': 2019}) }}" class="card-link">
+                    <img src="{{ asset('img/gallary.svg') }}" class="rounded beef-buttons" alt="Gallary">
+                </a>
+                <a href="{{ path('game_list', {'year': 2019}) }}" class="card-link">
+                    <img src="{{ asset('img/championship.svg') }}" class="rounded beef-buttons" alt="Championship">
+                </a>
+                <a href="zip/RoyalBeef_2019.zip" class="card-link">
+                    <img src="{{ asset('img/download.svg') }}" class="rounded beef-buttons" alt="Championship">
+                </a>
             </div>
         </div>
 {% endblock %}

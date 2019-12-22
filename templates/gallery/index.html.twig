@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gallery{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
+          media="screen">
+    <link rel="stylesheet" href="{{ asset('css/gallery.css') }}" media="screen">{% endblock %}
+
+{% block body %}
+    <div class="example-wrapper">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item" aria-current="page"><a href="{{ path('beef') }}">Beefs</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ year }}</li>
+            </ol>
+        </nav>
+
+        <div class="container page-top">
+
+            <div class="row">
+
+                {% for picture in pictures %}
+                    <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                        <a href="{{ path('gallery', {'year': year}) }}/{{ picture }}" class="fancybox" rel="ligthbox">
+                            <img src="{{ path('gallery', {'year': year}) }}/{{ picture }}" class="zoom img-fluid "
+                                 alt="">
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block footer %}
+    <script type="text/javascript"
+            src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".fancybox").fancybox({
+                openEffect: "none",
+                closeEffect: "none"
+            });
+
+            $(".zoom").hover(function () {
+
+                $(this).addClass('transition');
+            }, function () {
+
+                $(this).removeClass('transition');
+            });
+        });
+    </script>
+{% endblock %}

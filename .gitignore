@@ -27,3 +27,5 @@ node_modules
 /games
 
 /tests/data/games/123/spielname.csv
+public/gallery/2019
+*.zip
