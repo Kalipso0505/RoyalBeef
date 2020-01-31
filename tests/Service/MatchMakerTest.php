@@ -66,6 +66,9 @@ class MatchMakerTest extends TestCase
         $gamePlanExpected = [
             ['Player 1', 'Player 2'],
             ['a', 'b'],
+            ['a', 'b'], // additional game3 because all combinations were matched within one game
+            ['a', 'b'],
+            ['a', 'b'],
         ];
         $this->assertSame($gamePlanExpected, $gamePlan);
     }

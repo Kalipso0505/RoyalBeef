@@ -36,7 +36,7 @@ class ScoreServiceTest extends TestCase
             'Kos'     => 9,
             'Kalipso' => 9
         ];
-        $extractUserScore = ScoreService::extractUserResults($scores);
+        $extractUserScore = ScoreService::extractUserResults($scores, count($expected), count($expected));
         self::assertSame(ksort($expected), ksort($extractUserScore));
     }
 
