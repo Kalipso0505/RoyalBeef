@@ -19,25 +19,27 @@
         "symfony/http-foundation": "4.3.*",
         "symfony/intl": "4.3.*",
         "symfony/monolog-bundle": "^3.1",
-        "symfony/orm-pack": "*",
+        "symfony/orm-pack": "^1",
         "symfony/process": "4.3.*",
         "symfony/routing": "4.3.*",
         "symfony/security": "^4.3",
         "symfony/security-bundle": "4.3.*",
-        "symfony/serializer-pack": "*",
+        "symfony/serializer-pack": "^1",
         "symfony/swiftmailer-bundle": "^3.1",
         "symfony/translation": "4.3.*",
         "symfony/twig-bundle": "4.3.*",
         "symfony/validator": "4.3.*",
         "symfony/web-link": "4.3.*",
-        "symfony/yaml": "4.3.*"
+        "symfony/yaml": "4.3.*",
+      "ext-http": "*"
     },
     "require-dev": {
-        "symfony/debug-pack": "*",
+        "roave/security-advisories": "dev-master",
+        "symfony/debug-pack": "^1",
         "symfony/maker-bundle": "^1.0",
         "symfony/phpunit-bridge": "^4.3",
         "symfony/profiler-pack": "^1.0",
-        "symfony/test-pack": "*",
+        "symfony/test-pack": "^1",
         "symfony/web-server-bundle": "4.3.*"
     },
     "config": {
