@@ -90,9 +90,6 @@
     "egulias/email-validator": {
         "version": "2.1.11"
     },
-    "fig/link-util": {
-        "version": "1.0.0"
-    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
@@ -225,6 +222,9 @@
     },
     "symfony/dotenv": {
         "version": "v4.3.6"
+    },
+    "symfony/error-handler": {
+        "version": "v4.4.5"
     },
     "symfony/event-dispatcher": {
         "version": "v4.3.6"

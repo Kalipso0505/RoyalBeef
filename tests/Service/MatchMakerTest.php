@@ -6,7 +6,7 @@ namespace App\Tests\Service;
 
 use App\Service\MatchMaker;
 use Exception;
-use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class MatchMakerTest extends TestCase
 {
@@ -30,7 +30,8 @@ class MatchMakerTest extends TestCase
             ['a', 'c'],
             ['b', 'c']
         ];
-        $this->assertSame($gamePlanExpected, $gamePlan);
+
+        self::check($gamePlanExpected, $gamePlan);
     }
 
     public function testTwoPlayerCompeteWithFour(): void
@@ -47,7 +48,8 @@ class MatchMakerTest extends TestCase
             ['b', 'd'],
             ['c', 'd'],
         ];
-        $this->assertSame($gamePlanExpected, $gamePlan);
+
+        self::check($gamePlan, $gamePlanExpected);
     }
 
     public function testToFewPlayers(): void
@@ -70,14 +72,16 @@ class MatchMakerTest extends TestCase
             ['a', 'b'],
             ['a', 'b'],
         ];
-        $this->assertSame($gamePlanExpected, $gamePlan);
+
+        self::check($gamePlan, $gamePlanExpected);
+        self::assertCount(MatchMaker::GAME_COUNT_PLAYER_MATCHING + 1, $gamePlan);
+
     }
 
     public function testThreePlayerCompeteWithFour(): void
     {
         $playerList = ['a', 'b', 'c', 'd'];
         $gamePlan   = MatchMaker::createGamePlan($playerList, 3);
-
         $gamePlanExpected = [
             ['Player 1', 'Player 2', 'Player 3'],
             ['a', 'b', 'c'],
@@ -85,7 +89,8 @@ class MatchMakerTest extends TestCase
             ['a', 'b', 'd'],
             ['b', 'c', 'd'],
         ];
-        $this->assertSame($gamePlanExpected, $gamePlan);
+
+        self::check($gamePlan, $gamePlanExpected);
     }
 
     public function testFourPlayerCompeteWithSix(): void
@@ -96,18 +101,48 @@ class MatchMakerTest extends TestCase
         $gamePlanExpected = [
             ['Player 1', 'Player 2', 'Player 3', 'Player 4'],
             ['a', 'b', 'c', 'd'],
-            ['a', 'e', 'c', 'd'],
-            ['a', 'b', 'e', 'd'],
             ['a', 'b', 'c', 'e'],
-            ['a', 'f', 'c', 'd'],
-            ['a', 'b', 'f', 'd'],
             ['a', 'b', 'c', 'f'],
+            ['a', 'b', 'e', 'd'],
+            ['a', 'b', 'e', 'f'],
+            ['a', 'b', 'f', 'd'],
+            ['a', 'c', 'e', 'f'],
+            ['a', 'd', 'e', 'f'],
+            ['a', 'e', 'c', 'd'],
+            ['a', 'f', 'c', 'd'],
             ['b', 'c', 'd', 'e'],
-            ['b', 'f', 'd', 'e'],
-            ['b', 'c', 'f', 'e'],
             ['b', 'c', 'd', 'f'],
+            ['b', 'c', 'f', 'e'],
+            ['b', 'f', 'd', 'e'],
             ['c', 'd', 'e', 'f'],
         ];
-        $this->assertSame($gamePlanExpected, $gamePlan);
+
+        self::check($gamePlan, $gamePlanExpected);
+    }
+
+    private static function makeMultiArraySortable(array $unsorted)
+    {
+        $result = [];
+        foreach ($unsorted as $key => $subarray) {
+            asort($subarray);
+            $result[] = implode('.', $subarray);
+        }
+        asort($result);
+
+        return array_values($result);
+    }
+
+    /**
+     * @param array $gamePlanExpected
+     * @param array $gamePlan
+     */
+    private static function check(array $gamePlanExpected, array $gamePlan): void
+    {
+        $expected = self::makeMultiArraySortable($gamePlanExpected);
+        $plan = self::makeMultiArraySortable($gamePlan);
+
+        self::assertEquals([], array_diff($expected, $plan));
+        self::assertEquals([], array_diff($plan, $expected));
+        self::assertCount(count($expected), $plan);
     }
 }
