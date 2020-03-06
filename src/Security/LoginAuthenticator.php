@@ -21,18 +21,26 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator
 {
     use TargetPathTrait;
 
-    private $urlGenerator;
-    private $csrfTokenManager;
-    private $passwordEncoder;
+    /** @var UrlGeneratorInterface */
+    private UrlGeneratorInterface $urlGenerator;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
-    {
+    /** @var CsrfTokenManagerInterface */
+    private CsrfTokenManagerInterface $csrfTokenManager;
+
+    /** @var UserPasswordEncoderInterface */
+    private UserPasswordEncoderInterface $passwordEncoder;
+
+    public function __construct(
+        UrlGeneratorInterface $urlGenerator,
+        CsrfTokenManagerInterface $csrfTokenManager,
+        UserPasswordEncoderInterface $passwordEncoder
+    ) {
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;
     }
 
-    public function supports(Request $request)
+    public function supports(Request $request): bool
     {
         return 'app_login' === $request->attributes->get('_route')
             && $request->isMethod('POST');
@@ -93,7 +101,7 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator
         return new RedirectResponse($this->urlGenerator->generate('beef'));
     }
 
-    protected function getLoginUrl()
+    protected function getLoginUrl():string
     {
         return $this->urlGenerator->generate('app_login');
     }
